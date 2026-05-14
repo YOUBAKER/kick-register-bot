@@ -6,6 +6,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const messages = [];
+
 app.get("/", (req, res) => {
   res.send("Kick Register Bot Running");
 });
@@ -15,11 +17,19 @@ app.post("/attendance", (req, res) => {
 
   console.log("MESSAGE:", username, text);
 
-  res.json({
-    ok: true,
+  messages.push({
     username,
-    text
+    text,
+    timestamp: Date.now()
   });
+
+  res.json({
+    ok: true
+  });
+});
+
+app.get("/messages", (req, res) => {
+  res.json(messages);
 });
 
 app.listen(3000, () => {
